@@ -1714,6 +1714,7 @@ const confirmarYNotificarCliente = (apt) => {
                               </button>
                             )}
 <button
+type="button"
   onClick={() => confirmarYNotificarCliente(apt)}
   className="py-2 px-3 rounded-xl border border-[#DCD5CB] text-xs font-medium text-[#111111] hover:bg-[#FAF8F5] flex items-center gap-1.5"
 >
