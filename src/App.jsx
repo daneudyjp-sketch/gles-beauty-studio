@@ -210,6 +210,22 @@ export default function App() {
   // --- AUTENTICACIÓN FIREBASE ---
   const [user, setUser] = useState(null);
 
+const confirmarYNotificarCliente = (apt) => {
+    const telefonoLimpio = String(apt.clientPhone || '').replace(/\D/g, '');
+    const mensaje = [
+      `¡Cita confirmada! ✨ Hola *${apt.clientName || 'Cliente'}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:`,
+      ``,
+      `📌 *Servicio:* ${apt.serviceName || apt.servicio}`,
+      `📅 *Fecha:* ${apt.date || apt.fecha}`,
+      `🕒 *Hora:* ${apt.time || apt.hora}`,
+      ``,
+      `¡Te esperamos con mucho gusto! 💖`
+    ].join('\n');
+
+    const url = `https://wa.me/${telefonoLimpio}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+  };
+
   // --- ESTADOS PRINCIPALES DE DATOS ---
   const [appointments, setAppointments] = useState(() => readLocal(STORAGE_KEYS.APPOINTMENTS, []));
   const [blockedSlots, setBlockedSlots] = useState(() => readLocal(STORAGE_KEYS.BLOCKS, []));
@@ -1675,13 +1691,12 @@ export default function App() {
                           <div className="flex flex-wrap gap-2 pt-2 border-t border-[#F2EDE6]">
                             {!isConfirmed && (
                               <button
-                                type="button"
-                                onClick={() => handleUpdateStatus(apt.id, 'confirmed')}
-                                className="flex-1 py-2 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold flex items-center justify-center gap-1"
-                              >
-                                <Check className="w-3.5 h-3.5" />
-                                Confirmar Adelanto
-                              </button>
+  type="button"
+  onClick={() => confirmarYNotificarCliente(apt)}
+  className="py-2 px-3 rounded-xl border border-[#DCD5CB] text-xs font-medium text-[#111111] hover:bg-[#FAF8F5] flex items-center gap-1.5"
+>
+  ✅ Confirmar y Notificar
+</button>
                             )}
                             {!isCancelled && (
                               <button
