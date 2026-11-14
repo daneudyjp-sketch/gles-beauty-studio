@@ -217,14 +217,6 @@ export default function App() {
   const [settings, setSettings] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
   const [loadingData, setLoadingData] = useState(Boolean(db));
 
-
-  // --- ESTADOS PRINCIPALES DE DATOS ---
-  const [appointments, setAppointments] = useState(() => readLocal(STORAGE_KEYS.APPOINTMENTS, []));
-  const [blockedSlots, setBlockedSlots] = useState(() => readLocal(STORAGE_KEYS.BLOCKS, []));
-  const [services, setServices] = useState(() => readLocal(STORAGE_KEYS.SERVICES, DEFAULT_SERVICES));
-  const [settings, setSettings] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
-  const [loadingData, setLoadingData] = useState(Boolean(db));
-
   // --- ESTADOS DE FLUJO DE RESERVA ---
   const [step, setStep] = useState(1); // 1: Servicios, 2: Fecha/Hora, 3: Datos & Adelanto, 4: Confirmación
   const [selectedServiceIds, setSelectedServiceIds] = useState([]);
