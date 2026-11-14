@@ -211,18 +211,37 @@ export default function App() {
   const [user, setUser] = useState(null);
 
 const confirmarYNotificarCliente = (apt) => {
-    const telefonoLimpio = String(apt.clientPhone || apt.telefono || '').replace(/\D/g, '');
-    
-    // Capturamos el servicio y la hora revisando todas las posibles variantes de nombres
-    const nombreServicio = apt.serviceName || apt.servicio || apt.service?.name || apt.service || 'Servicio General';
-    const horaCita = apt.time || apt.hora || apt.appointmentTime || 'Por confirmar';
-    const fechaCita = apt.date || apt.fecha || apt.appointmentDate || '';
+    // 1. Extraemos el teléfono del cliente (soporta varias propiedades)
+    const telefonoLimpio = String(apt.clientPhone || apt.telefono || apt.phone || '').replace(/\D/g, '');
     const nombreCliente = apt.clientName || apt.nombre || 'Cliente';
 
+    // 2. Extraemos los servicios usando exactamente el formato de tu app (booking.services o servicio individual)
+    let serviciosTexto = 'Servicio de Belleza';
+    if (Array.isArray(apt.services) && apt.services.length > 0) {
+      serviciosTexto = apt.services.map((s) => `• ${s.name || s.servicio || 'Servicio'}`).join('\n');
+    } else if (apt.serviceName || apt.servicio || apt.service) {
+      serviciosTexto = `• ${apt.serviceName || apt.servicio || apt.service}`;
+    }
+
+    // 3. Extraemos la fecha y las horas de forma robusta
+    const fechaCita = typeof formatDatespanish === 'function' && apt.date 
+      ? formatDatespanish(apt.date) 
+      : (apt.date || apt.fecha || '');
+
+    let horaCita = 'Por confirmar';
+    if (apt.startTime && apt.endTime && typeof formatTime12h === 'function') {
+      horaCita = `${formatTime12h(apt.startTime)} - ${formatTime12h(apt.endTime)}`;
+    } else if (apt.time || apt.hora) {
+      horaCita = apt.time || apt.hora;
+    }
+
+    // 4. Armamos el mensaje oficial de confirmación
     const mensaje = [
       `¡Cita confirmada! ✨ Hola *${nombreCliente}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:`,
       ``,
-      `📌 *Servicio:* ${nombreServicio}`,
+      `📌 *Servicios:*`,
+      serviciosTexto,
+      ``,
       `📅 *Fecha:* ${fechaCita}`,
       `🕒 *Hora:* ${horaCita}`,
       ``,
