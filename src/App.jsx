@@ -1699,10 +1699,16 @@ const confirmarYNotificarCliente = (apt) => {
                             {!isConfirmed && (
                               <button
   type="button"
-  onClick={() => confirmarYNotificarCliente(apt)}
+  onClick={() => {
+    // 1. Cambiamos el estado de la cita a confirmada/aprobada (usando tu función de actualización existente)
+    handleUpdateStatus(apt.id, 'confirmed'); // O 'approved', según el nombre que uses en tu app
+    // 2. Disparamos la notificación por WhatsApp
+    confirmarYNotificarCliente(apt);
+  }}
   className="py-2 px-3 rounded-xl border border-[#DCD5CB] text-xs font-medium text-[#111111] hover:bg-[#FAF8F5] flex items-center gap-1.5"
 >
-  ✅ Confirmar y Notificar
+  <Check className="w-3.5 h-3.5" />
+  Confirmar y Notificar
 </button>
                             )}
                             {!isCancelled && (
