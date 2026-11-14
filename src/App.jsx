@@ -228,19 +228,6 @@ export default function App() {
   const [settings, setSettings] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
   const [loadingData, setLoadingData] = useState(Boolean(db));
 
- const confirmarYNotificarCliente = (apt) => {
-    const telefonoLimpio = String(apt.clientPhone || '').replace(/\D/g, '');
-    const mensaje = `¡Cita confirmada! ✨ Hola *${apt.clientName || 'Cliente'}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:
-
-📌 *Servicio:* ${apt.serviceName || apt.servicio}
-📅 *Fecha:* ${apt.date || apt.fecha}
-🕒 *Hora:* ${apt.time || apt.hora}
-
-¡Te esperamos con mucho gusto! 💖`;
-
-    const url = `https://wa.me/${telefonoLimpio}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, '_blank');
-  };
   // --- ESTADOS DE FLUJO DE RESERVA ---
   const [step, setStep] = useState(1); // 1: Servicios, 2: Fecha/Hora, 3: Datos & Adelanto, 4: Confirmación
   const [selectedServiceIds, setSelectedServiceIds] = useState([]);
