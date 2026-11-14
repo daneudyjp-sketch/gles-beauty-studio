@@ -228,17 +228,17 @@ export default function App() {
   const [settings, setSettings] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
   const [loadingData, setLoadingData] = useState(Boolean(db));
 
-  const confirmarYNotificarCliente = (cita) => {
-    const telefonoLimpio = cita.telefono.replace(/\D/g, '');
-    const mensaje = `¡Cita confirmada! ✨ Hola *${cita.cliente}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:\n\n` +
-                    `📌 *Servicio:* ${cita.servicio}\n` +
-                    `📅 *Fecha:* ${cita.fecha}\n` +
-                    `🕒 *Hora:* ${cita.hora}\n\n` +
-                    `¡Te esperamos con mucho gusto! 💖`;
-    
-    const url = `https://wa.me/${telefonoLimpio}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, '_blank');
-  };
+ const confirmarYNotificarCliente = (apt) => {
+  const telefonoLimpio = String(apt.clientPhone || '').replace(/\D/g, '');
+  const mensaje = `¡Cita confirmada! ✨ Hola *${apt.clientName || 'Cliente'}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:\n\n` +
+                  `📌 *Servicio:* ${apt.serviceName || apt.servicio}\n` +
+                  `📅 *Fecha:* ${apt.date || apt.fecha}\n` +
+                  `🕒 *Hora:* ${apt.time || apt.hora}\n\n` +
+                  `¡Te esperamos con mucho gusto! 💖`;
+
+  const url = `https://wa.me/${telefonoLimpio}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, '_blank');
+};
   // --- ESTADOS DE FLUJO DE RESERVA ---
   const [step, setStep] = useState(1); // 1: Servicios, 2: Fecha/Hora, 3: Datos & Adelanto, 4: Confirmación
   const [selectedServiceIds, setSelectedServiceIds] = useState([]);
@@ -272,12 +272,7 @@ export default function App() {
   const [editPriceVal, setEditPriceVal] = useState(300);
   const [editNameVal, setEditNameVal] = useState('');
   const [settingsForm, setSettingsForm] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
-<button 
-  onClick={() => confirmarYNotificarCliente(cita)}
-  className="bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 hover:bg-green-700"
->
-  ✅ Confirmar y Notificar por WhatsApp
-</button>
+
 const confirmarYNotificarCliente = (cita) => {
     const telefonoLimpio = cita.telefono.replace(/\D/g, '');
     const mensaje = `¡Cita confirmada! ✨ Hola *${cita.cliente}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:\n\n` +
@@ -1734,6 +1729,12 @@ const confirmarYNotificarCliente = (cita) => {
                                 Cancelar (Liberar)
                               </button>
                             )}
+<button
+  onClick={() => confirmarYNotificarCliente(apt)}
+  className="py-2 px-3 rounded-xl border border-[#DCD5CB] text-xs font-medium text-[#111111] hover:bg-[#FAF8F5] flex items-center gap-1.5"
+>
+  ✅ Confirmar y Notificar
+</button>
                             <a
                               href={`https://wa.me/1${String(apt.clientPhone || '').replace(/\D/g, '')}`}
                               target="_blank"
