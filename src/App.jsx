@@ -262,21 +262,6 @@ export default function App() {
   const [editNameVal, setEditNameVal] = useState('');
   const [settingsForm, setSettingsForm] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
 
-const confirmarYNotificarCliente = (apt) => {
-    const telefonoLimpio = String(apt.clientPhone || '').replace(/\D/g, '');
-    const mensaje = [
-      `¡Cita confirmada! ✨ Hola *${apt.clientName || 'Cliente'}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:`,
-      ``,
-      `📌 *Servicio:* ${apt.serviceName || apt.servicio}`,
-      `📅 *Fecha:* ${apt.date || apt.fecha}`,
-      `🕒 *Hora:* ${apt.time || apt.hora}`,
-      ``,
-      `¡Te esperamos con mucho gusto! 💖`
-    ].join('\n');
-
-    const url = `https://wa.me/${telefonoLimpio}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, '_blank');
-  };
   // --- INICIALIZAR FECHA POR DEFECTO (LUNES A SÁBADO) ---
   useEffect(() => {
     const today = new Date();
@@ -1721,13 +1706,7 @@ const confirmarYNotificarCliente = (apt) => {
                                 Cancelar (Liberar)
                               </button>
                             )}
-<button
-type="button"
-  onClick={() => confirmarYNotificarCliente(apt)}
-  className="py-2 px-3 rounded-xl border border-[#DCD5CB] text-xs font-medium text-[#111111] hover:bg-[#FAF8F5] flex items-center gap-1.5"
->
-  ✅ Confirmar y Notificar
-</button>
+
                             <a
                               href={`https://wa.me/1${String(apt.clientPhone || '').replace(/\D/g, '')}`}
                               target="_blank"
