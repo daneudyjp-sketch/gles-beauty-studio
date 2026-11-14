@@ -217,9 +217,6 @@ export default function App() {
   const [settings, setSettings] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
   const [loadingData, setLoadingData] = useState(Boolean(db));
 
-export default function App() {
-  // --- AUTENTICACIÓN FIREBASE ---
-  const [user, setUser] = useState(null);
 
   // --- ESTADOS PRINCIPALES DE DATOS ---
   const [appointments, setAppointments] = useState(() => readLocal(STORAGE_KEYS.APPOINTMENTS, []));
@@ -262,9 +259,7 @@ export default function App() {
   const [editNameVal, setEditNameVal] = useState('');
   const [settingsForm, setSettingsForm] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
 
-  // --- INICIALIZAR FECHA POR DEFECTO (LUNES A SÁBADO) ---
-  useEffect(() => {
-    const today = new Date();
+ 
   // --- INICIALIZAR FECHA POR DEFECTO (LUNES A SÁBADO) ---
   useEffect(() => {
     const today = new Date();
