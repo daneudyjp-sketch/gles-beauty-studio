@@ -211,13 +211,20 @@ export default function App() {
   const [user, setUser] = useState(null);
 
 const confirmarYNotificarCliente = (apt) => {
-    const telefonoLimpio = String(apt.clientPhone || '').replace(/\D/g, '');
+    const telefonoLimpio = String(apt.clientPhone || apt.telefono || '').replace(/\D/g, '');
+    
+    // Capturamos el servicio y la hora revisando todas las posibles variantes de nombres
+    const nombreServicio = apt.serviceName || apt.servicio || apt.service?.name || apt.service || 'Servicio General';
+    const horaCita = apt.time || apt.hora || apt.appointmentTime || 'Por confirmar';
+    const fechaCita = apt.date || apt.fecha || apt.appointmentDate || '';
+    const nombreCliente = apt.clientName || apt.nombre || 'Cliente';
+
     const mensaje = [
-      `¡Cita confirmada! ✨ Hola *${apt.clientName || 'Cliente'}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:`,
+      `¡Cita confirmada! ✨ Hola *${nombreCliente}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:`,
       ``,
-      `📌 *Servicio:* ${apt.serviceName || apt.servicio}`,
-      `📅 *Fecha:* ${apt.date || apt.fecha}`,
-      `🕒 *Hora:* ${apt.time || apt.hora}`,
+      `📌 *Servicio:* ${nombreServicio}`,
+      `📅 *Fecha:* ${fechaCita}`,
+      `🕒 *Hora:* ${horaCita}`,
       ``,
       `¡Te esperamos con mucho gusto! 💖`
     ].join('\n');
