@@ -130,7 +130,7 @@ const DEFAULT_SERVICES = [
 const DEFAULT_SETTINGS = {
   bankInfo: 'Banco Popular / Banreservas / Qik | Cuenta de Ahorros: 000-000000-0 | Titular: GLES Beauty Studio (Edita estos datos en el Panel Admin)',
   depositNote: 'Para asegurar tu espacio se requiere un adelanto mínimo de RD$300 (o el 30% en servicios mayores a RD$1,000).',
-  adminPin: '1234'
+  adminPin: '1909'
 };
 
 // --- UTILIDADES DE TIEMPO Y FECHA ---
@@ -586,7 +586,7 @@ export default function App() {
   // --- FUNCIONES PANEL ADMINISTRACIÓN ---
   const handleVerifyPin = (e) => {
     e.preventDefault();
-    if (pinInput === (settings.adminPin || '1234')) {
+    if (pinInput === (settings.adminPin || '1909')) {
       setShowPinModal(false);
       setPinInput('');
       setPinError('');
@@ -1526,7 +1526,7 @@ export default function App() {
             </div>
 
             <p className="text-xs text-[#6E685F]">
-              Ingresa tu PIN de administración para gestionar citas, bloqueos y precios. (PIN por defecto: <strong>1234</strong>).
+              Ingresa tu PIN de administración para gestionar citas, bloqueos y precios. (ocultando el PIN por seguridad).
             </p>
 
             <form onSubmit={handleVerifyPin} className="space-y-3">
