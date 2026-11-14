@@ -217,6 +217,28 @@ export default function App() {
   const [settings, setSettings] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
   const [loadingData, setLoadingData] = useState(Boolean(db));
 
+export default function App() {
+  // --- AUTENTICACIÓN FIREBASE ---
+  const [user, setUser] = useState(null);
+
+  // --- ESTADOS PRINCIPALES DE DATOS ---
+  const [appointments, setAppointments] = useState(() => readLocal(STORAGE_KEYS.APPOINTMENTS, []));
+  const [blockedSlots, setBlockedSlots] = useState(() => readLocal(STORAGE_KEYS.BLOCKS, []));
+  const [services, setServices] = useState(() => readLocal(STORAGE_KEYS.SERVICES, DEFAULT_SERVICES));
+  const [settings, setSettings] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
+  const [loadingData, setLoadingData] = useState(Boolean(db));
+
+  const confirmarYNotificarCliente = (cita) => {
+    const telefonoLimpio = cita.telefono.replace(/\D/g, '');
+    const mensaje = `¡Cita confirmada! ✨ Hola *${cita.cliente}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:\n\n` +
+                    `📌 *Servicio:* ${cita.servicio}\n` +
+                    `📅 *Fecha:* ${cita.fecha}\n` +
+                    `🕒 *Hora:* ${cita.hora}\n\n` +
+                    `¡Te esperamos con mucho gusto! 💖`;
+    
+    const url = `https://wa.me/${telefonoLimpio}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+  };
   // --- ESTADOS DE FLUJO DE RESERVA ---
   const [step, setStep] = useState(1); // 1: Servicios, 2: Fecha/Hora, 3: Datos & Adelanto, 4: Confirmación
   const [selectedServiceIds, setSelectedServiceIds] = useState([]);
@@ -250,7 +272,12 @@ export default function App() {
   const [editPriceVal, setEditPriceVal] = useState(300);
   const [editNameVal, setEditNameVal] = useState('');
   const [settingsForm, setSettingsForm] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
-
+<button 
+  onClick={() => confirmarYNotificarCliente(cita)}
+  className="bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 hover:bg-green-700"
+>
+  ✅ Confirmar y Notificar por WhatsApp
+</button>
   // --- INICIALIZAR FECHA POR DEFECTO (LUNES A SÁBADO) ---
   useEffect(() => {
     const today = new Date();
