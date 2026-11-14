@@ -263,16 +263,12 @@ export default function App() {
   const [settingsForm, setSettingsForm] = useState(() => readLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS));
 
 const confirmarYNotificarCliente = (apt) => {
-  const telefonoLimpio = String(apt.clientPhone || '').replace(/\D/g, '');
-  const mensaje = `¡Cita confirmada! ✨ Hola *${apt.clientName || 'Cliente'}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:\n\n` +
-                  `📌 *Servicio:* ${apt.serviceName || apt.servicio}\n` +
-                  `📅 *Fecha:* ${apt.date || apt.fecha}\n` +
-                  `🕒 *Hora:* ${apt.time || apt.hora}\n\n` +
-                  `¡Te esperamos con mucho gusto! 💖`;
-
-  const url = `https://wa.me/${telefonoLimpio}?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, '_blank');
-};
+    const telefonoLimpio = String(apt.clientPhone || '').replace(/\D/g, '');
+    const mensaje = `¡Cita confirmada! ✨ Hola *${apt.clientName || 'Cliente'}*, te escribimos de Gles Beauty Studio para confirmarte que tu cita ha sido registrada y aprobada con éxito:\n\n📌 *Servicio:* ${apt.serviceName || apt.servicio}\n📅 *Fecha:* ${apt.date || apt.fecha}\n🕒 *Hora:* ${apt.time || apt.hora}\n\n¡Te esperamos con mucho gusto! 💖`;
+    
+    const url = `https://wa.me/${telefonoLimpio}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+  };
   // --- INICIALIZAR FECHA POR DEFECTO (LUNES A SÁBADO) ---
   useEffect(() => {
     const today = new Date();
