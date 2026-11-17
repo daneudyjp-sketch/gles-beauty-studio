@@ -640,29 +640,40 @@ const confirmarYNotificarCliente = (apt) => {
   };
 
   const handleUpdateStatus = async (appointmentId, newStatus) => {
-    try {
+  try {
+    if (newStatus === 'cancelled') {
+      // Si se cancela, eliminamos el documento por completo en lugar de actualizarlo
       if (db && user) {
         const ref = doc(db, 'artifacts', appId, 'public', 'data', 'appointments', appointmentId);
-        await updateDoc(ref, { status: newStatus });
+        await deleteDoc(ref);
       } else {
-        const updated = appointments.map((a) =>
-          a.id === appointmentId ? { ...a, status: newStatus } : a
-        );
+        const updated = appointments.filter((a) => a.id !== appointmentId);
         setAppointments(updated);
         writeLocal(STORAGE_KEYS.APPOINTMENTS, updated);
       }
-      const label =
-        newStatus === 'confirmed'
-          ? 'Adelanto Confirmado'
-          : newStatus === 'cancelled'
-          ? 'Cita Cancelada (Horario liberado)'
-          : newStatus;
-      showToast(`Estado actualizado: ${label}`);
-    } catch (err) {
-      console.error('Error actualizando cita:', err);
-      showToast('Error al actualizar el estado.');
+      showToast('Cita cancelada y eliminada del sistema.');
+      return;
     }
-  };
+
+    // Comportamiento normal para otros estados (como 'confirmed')
+    if (db && user) {
+      const ref = doc(db, 'artifacts', appId, 'public', 'data', 'appointments', appointmentId);
+      await updateDoc(ref, { status: newStatus });
+    } else {
+      const updated = appointments.map((a) =>
+        a.id === appointmentId ? { ...a, status: newStatus } : a
+      );
+      setAppointments(updated);
+      writeLocal(STORAGE_KEYS.APPOINTMENTS, updated);
+    }
+    
+    const label = newStatus === 'confirmed' ? 'Adelanto Confirmado' : newStatus;
+    showToast(`Estado actualizado: ${label}`);
+  } catch (err) {
+    console.error('Error actualizando cita:', err);
+    showToast('Error al actualizar el estado.');
+  }
+};
 
   const handleAddBlockSlot = async (e) => {
     e.preventDefault();
